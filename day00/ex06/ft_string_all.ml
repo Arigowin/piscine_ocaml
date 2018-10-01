@@ -1,8 +1,4 @@
 
-let is_digit c =
-    c >= '0' && c <= '9'
-
-
 let ft_string_all f str = 
     let len = String.length str in
     let rec loop_str i = 
@@ -11,6 +7,10 @@ let ft_string_all f str =
         else
             i = len
     in loop_str 0
+
+
+let is_digit c =
+    c >= '0' && c <= '9'
 
 
 let main () =
