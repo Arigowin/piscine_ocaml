@@ -23,6 +23,10 @@ let main () =
   print_int (hfs_m 4);
   print_char '\n';
   print_int (hfs_f 4);
+  print_char '\n';
+  print_int (hfs_m (-1));
+  print_char '\n';
+  print_int (hfs_f (-1));
   print_char '\n'
 
 let () = main ()
