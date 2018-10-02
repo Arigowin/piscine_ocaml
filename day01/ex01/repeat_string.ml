@@ -1,13 +1,10 @@
-let repeat_string ?(str="x") n = 
+let rec repeat_string ?(str="x") n = 
   if n < 0 then
     "Error"
-  else 
-    let rec loop_str i res =
-      if i > 0 then
-        loop_str (i - 1) (res ^ str)
-      else
-        res
-    in loop_str n ""
+  else if n = 0 then
+    ""
+  else
+    str ^ repeat_string ~str:str (n - 1)
 
 
 let main () = 
