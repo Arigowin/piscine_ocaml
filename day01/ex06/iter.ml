@@ -1,4 +1,4 @@
-let rec iter f x n  =
+let iter f x n  =
   let rec it n acc =
     if n < 0 then
       -1
