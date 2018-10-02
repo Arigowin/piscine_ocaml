@@ -1,4 +1,3 @@
-
 let ft_is_palindrome str =
     let len = String.length str in
     let rec loop_str i j =

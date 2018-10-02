@@ -1,4 +1,3 @@
-
 let ft_print_rev str =
     let i = (String.length str) in
     let rec loop_str i =

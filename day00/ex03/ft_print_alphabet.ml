@@ -1,4 +1,3 @@
-
 let ft_print_alphabet () =
     let rec loop_letters c =
         if c <= 122 then

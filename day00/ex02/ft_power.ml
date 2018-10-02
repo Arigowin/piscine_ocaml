@@ -1,4 +1,3 @@
-
 let rec ft_power nb pow =
     if pow = 0 then
         1

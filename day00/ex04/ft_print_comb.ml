@@ -1,4 +1,3 @@
-
 let ft_print_comb () =
     let i = 0 in
     let j = 1 in
