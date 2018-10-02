@@ -1,4 +1,4 @@
-let rec iter f (x : int) n  =
+let rec iter f x n  =
   if n < 0 then
     -1
   else if n = 0 then
