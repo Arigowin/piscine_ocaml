@@ -10,7 +10,7 @@ let crossover l1 l2 =
 
 
 let main () =
-  let show_res a = 
+  let show_res a =
     Printf.printf "%d, " a
   in
   List.iter show_res (crossover (1 :: 2 :: 3 :: 4 :: 6 :: []) (1 :: 2 :: 5 :: 4 :: [])); (* 4, 2, 1, *)
