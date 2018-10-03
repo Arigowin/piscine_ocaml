@@ -3,7 +3,7 @@ let encode l =
     | []      -> acc
     | a :: b  -> list_to_tuple (a :: acc) b
   in let rec browse_list count acc = function
-      | [] -> []
+      | []                            -> []
       | [elem]                        -> (count + 1, elem) :: acc
       | a :: (b :: _ as t) when a = b -> browse_list (count + 1) acc t
       | a :: t                        -> browse_list 0 ((count + 1, a) :: acc) t
