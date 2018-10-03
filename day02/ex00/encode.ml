@@ -1,12 +1,12 @@
 let encode l =
   let rec list_to_tuple acc = function
-    | [] -> acc
-    | a :: b -> list_to_tuple (a :: acc) b
+    | []      -> acc
+    | a :: b  -> list_to_tuple (a :: acc) b
   in let rec browse_list count acc = function
       | [] -> []
-      | [elem] -> (count + 1, elem) :: acc
+      | [elem]                        -> (count + 1, elem) :: acc
       | a :: (b :: _ as t) when a = b -> browse_list (count + 1) acc t
-      | a :: t -> browse_list 0 ((count + 1, a) :: acc) t
+      | a :: t                        -> browse_list 0 ((count + 1, a) :: acc) t
   in list_to_tuple [] (browse_list 0 [] l) 
 
 
