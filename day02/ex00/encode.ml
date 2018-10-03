@@ -1,4 +1,3 @@
-
 let encode l =
   let rec list_to_tuple acc = function
     | [] -> acc
@@ -9,6 +8,7 @@ let encode l =
       | a :: (b :: _ as t) when a = b -> browse_list (count + 1) acc t
       | a :: t -> browse_list 0 ((count + 1, a) :: acc) t
   in list_to_tuple [] (browse_list 0 [] l) 
+
 
 let main () =
   let show_res (a, b) = 
