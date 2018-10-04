@@ -9,7 +9,7 @@ CAMLDEP = ocamldep
 LIBS = $(WITHGRAPHICS)
 WITHGRAPHICS = graphics.cma -cclib -lgraphics
 
-all: depend $(NAME)
+all: $(NAME)
 
 $(NAME): opt byt
 	@ln -s $(NAME).byt $(NAME)
@@ -47,9 +47,4 @@ fclean: clean
 	@rm -f $(NAME).opt
 	@rm -f $(NAME).byt
 
-depend: .depend
-	@$(CAMLDEP) $(SOURCES) > .depend
-
 re: fclean all
-
-include .depend
