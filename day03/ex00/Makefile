@@ -12,6 +12,7 @@ WITHGRAPHICS = graphics.cma -cclib -lgraphics
 all: $(NAME)
 
 $(NAME): opt byt
+	@rm -f $(NAME)
 	@ln -s $(NAME).byt $(NAME)
 
 opt: $(NAME).opt

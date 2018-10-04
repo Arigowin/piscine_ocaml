@@ -33,12 +33,15 @@ let draw_tree_node node =
           Graphics.moveto (x - (size / 3)) y; 
           Graphics.draw_string "Nil";
         )
-  in browse 300 300 node;;
+  in browse 300 300 node
 
 let main () =
+  (* init *)
   Graphics.open_graph " 800x600";
+
+  (* test *)
   let t = (Node ("Test", (Node ("Test2", Nil, Nil)), Nil));
   in draw_tree_node t;
-  Graphics.read_key ();;
+  ignore(Graphics.read_key ())
 
-let _ = main();;
+let () = main ()
