@@ -1,18 +1,5 @@
-(* module Player =
-   struct
-
-   type t = P1 | P2 | None
-   type player = { name : string; id : t}
-
-   let toStr = function
-   | P1 -> "O "
-   | P2 -> "X "
-   | None -> "- "
-
-   end *)
-
 type board = Won of Player.t | Open of board list
-(* type table = board list list *)
+
 
 let square num =
   let rec loop = function
@@ -20,26 +7,25 @@ let square num =
     | n -> (Won Player.None) :: loop(n-1)
   in Open (loop (num*num))
 
+
 let table num f =
   let rec loop = function
     | 0 -> []
     | n -> (f num) :: loop(n-1)
   in Open (loop (num*num))
 
-let rec print mainBoard =
-  match mainBoard with
-  | [] -> print_string ("")
-  | h1::h2::h3::t -> print_endline(Player.toStr h1 ^ Player.toStr h2 ^ Player.toStr h3 ^ "\n"); print t;
-  | _ -> print_string "ERROR"
+
+let megatable num =
+  let rec loop = function
+    | 0 -> []
+    | n -> (table num square) :: loop(n-1)
+  in Open (loop (num*num))
 
 
-let splitList board n =
-  let rec aux board acc = function
-    | 0 -> ( match board with
-        | [] -> [acc]
-        | _ -> acc :: (aux board [] n))
-    | num -> aux ( List.tl board) ((List.hd board)::acc) (num-1)
-  in aux board [] n
+let listOf board = match board with
+  | Open (x) -> x
+  | _ -> []
+
 
 let rec mark_won board n p = match n with
   | 0 ->( match board with
@@ -48,6 +34,7 @@ let rec mark_won board n p = match n with
   | _ -> match board with
     | Open (h::t) -> Open ( h :: (match (mark_won (Open t) (n-1) p) with | Open (x) -> x | _ -> t ))
     | _ -> board
+
 
 let play board (c, i) p =
   let rec aux board n = match n with
@@ -59,11 +46,13 @@ let play board (c, i) p =
       | _ -> board
   in aux board c
 
+
 let convert_coord yy xx n =
   let x = (xx - 1) and y = (yy - 1)
   in let c = ((y / n) * n) + (x / n)
   and i = ((y mod n) * n) + (x mod n)
   in (c , i)
+
 
 (* returns true when the cell is clear, false when the move is invalid *)
 let check_pos board (c, i) =
@@ -78,20 +67,33 @@ let check_pos board (c, i) =
       | _ -> false
   in aux board c
 
+
+let is_player = function | Won x -> true | _ -> false
+
+let rec count_cells p board =
+  let aux h = if not (is_player h) || h = (Won p) then 1 else 0
+  in match board with
+    | h::t -> aux h + count_cells p t
+    | [] -> 0
+
+let count_empty_cells = count_cells Player.None
+
 let check_little_won board i size p =
-  let rec aux num start incr = match num with
-    | 0 -> []
-    | _ -> start :: aux (num-1) (start + incr) incr
-  in let a = aux size (i mod size) size
-  and b = aux size (i / size * size) 1
-  and c = aux size 0 (size + 1)
-  and d = aux size (size-1) (size-1)
-  and get_list  = function | (Open x) -> x | _ -> []
-  in let check_match n = match (List.nth (get_list board) n) with
-      | Won x -> Won x = Won p
-      | Open x -> false
-  in let f x = List.for_all (fun n -> check_match n) x
-  in f a || f b || f c || f d
+  if count_empty_cells (listOf board) = 0 then true else (
+    let rec aux num start incr = match num with
+      | 0 -> []
+      | _ -> start :: aux (num-1) (start + incr) incr
+    in let a = aux size (i mod size) size
+    and b = aux size (i / size * size) 1
+    and c = aux size 0 (size + 1)
+    and d = aux size (size-1) (size-1)
+    and get_list  = function | (Open x) -> x | _ -> []
+    in let check_match n = match (List.nth (get_list board) n) with
+        | Won x -> Won x = Won p
+        | Open x -> false
+    in let f x = List.for_all (fun n -> check_match n) x
+    in f a || f b || f c || f d )
+
 
 let rec check_won board size c i p  = match c with
   | 0 ->( match board with
@@ -113,36 +115,6 @@ let extractLineItems count offset list =
   in
   loop list count offset []
 
-let printLine line =
-  let rec loop items = match items with
-    | head::tail ->
-      begin
-        match head with
-        | Won (x) -> print_string @@ Player.toStr x; loop tail
-        | _ -> ()
-      end
-    | _ -> print_endline ""
-  in
-  loop line
-
-let listOf board = match board with
-  | Open (x) -> x
-  | _ -> []
-
-let printSmallBoard board =
-  let boardList = listOf board in
-  let rec loop remaining = match remaining with
-    | head::tail ->
-      begin
-        let extracted = extractLineItems 3 0 remaining in
-        let line = match (extracted) with | (x, _) -> x in
-        let tail = match (extracted) with | (_, t) -> t in
-        printLine line;
-        loop tail
-      end
-    | [] -> ()
-  in
-  loop boardList
 
 let boardLevels board =
   let rec loop acc board = match board with
@@ -151,24 +123,6 @@ let boardLevels board =
   in
   loop 0 board
 
-let firstBoardLine board =
-  (* let totalLevels = boardLevels board in *)
-  let rec loop level inner = match inner with
-    | Won (player) -> (Won player)
-    | Open (boards) ->
-      begin
-        match boards with
-        | [] -> Open []
-        | innerLst ->
-          begin
-            let line = (match (extractLineItems 3 0 innerLst) with (x, _) -> x) in
-            match line with
-            | [] -> Open []
-            | x -> Open (List.map (loop (level + 1)) x)
-          end
-      end
-  in
-  loop 0 board
 
 let power value p =
   if p = 0 then 1 else
@@ -179,9 +133,8 @@ let power value p =
     loop 1 value
 
 
-let boardLine row board =
+let boardLine row board size =
   let totalLevels = boardLevels board in
-  (* print_endline @@ string_of_int totalLevels; *)
   let rec loop level row inner = match inner with
     | Won (player) -> (Won player)
     | Open (boards) ->
@@ -190,54 +143,71 @@ let boardLine row board =
         | [] -> Open []
         | innerLst ->
           begin
-            let currentRow = 
-              if level > 1 then row / (power 3 (3 - level))
-              else row mod 3
+            let currentRow =
+              row / (power size (level - 1))
             in
-            let cut = extractLineItems 3 (currentRow * 3) innerLst in
+            let cut = extractLineItems size (currentRow * size) innerLst in
             let lines = match cut with (x, _) -> x in
-            (* let otherLines = match cut with (_, x) -> x in *)
-            Open (List.map (loop (level - 1) row) lines)
+            Open (List.map (loop (level - 1) (row - (currentRow * (power size (level - 1))))) lines)
           end
       end
   in
   loop totalLevels row board
 
-let toPrintableBoard board =
+
+let toPrintableBoard board size =
   let totalLevels = boardLevels board in
-  let totalHeight = power 3 totalLevels in
-  (* print_endline @@ string_of_int @@ totalHeight; *)
+  let totalHeight = power size totalLevels in
   let rec loop line =
     if line = totalHeight then []
-    else boardLine line board :: loop (line + 1)
+    else boardLine line board size :: loop (line + 1)
   in
   loop 0
 
-let printLine printableBoardLine =
+
+let printLine printableBoardLine size =
   print_string "| ";
   let rec loop level board =
     begin
       match board with
-        | Won (x) -> 
-          if level = 1 then print_string @@ String.make (3 + (3 - 1)) (String.get (Player.toStr x) 0) ^ " | "
-          else print_string @@ (Player.toStr x)
-        | Open (x) -> match x with
-          | head::tail -> loop (level + 1) head; List.iter (loop (level + 1)) tail; if level <> 0 then print_string @@ "| ";
-          (* | head::tail -> loop head; List.iter loop tail *)
-          | [] -> ()
+      | Won (x) ->
+        if level = 1 then print_string @@ String.make (size + (size - 1)) (String.get (Player.toStr x) 0) ^ " | "
+        else print_string @@ (Player.toStr x)
+      | Open (x) -> match x with
+        | head::tail -> loop (level + 1) head; List.iter (loop (level + 1)) tail; if level <> 0 then print_string @@ "| ";
+        | [] -> ()
     end;
   in
   loop 0 printableBoardLine;
   print_endline ""
 
-let printBoard printableBoard =
-  let seperator = String.make ((3+(3+1)+1)*3 + 1) '-' in
+
+let seperator level size =
+  let rec sizeLoop localLevel localSize = match localSize with
+    | 0 -> ""
+    | _ -> (levelLoop (localLevel - 1)) ^ (sizeLoop localLevel (localSize - 1))
+  and levelLoop localLevel = match localLevel with
+    | 0 -> "--"
+    | _ -> "-" ^ (sizeLoop localLevel size) ^ (if localLevel <> level then "-" else "")
+    in let res = levelLoop level in
+    res
+
+  let rec applyNTimes n f =
+     if n = 0 then ()
+     else (f(); applyNTimes (n - 1) f)
+
+let printBoard printableBoard levels size =
+  let seperator = seperator levels size in
+  let expectedSize = (size * size) in
   print_endline @@ seperator;
   let rec loop lines count = match lines with
     | head::tail ->
       begin
-        if (count <> 0) && ((count mod 3) = 0) then print_endline @@ seperator;
-        printLine head;
+        if (count <> 0) && ((count mod size) = 0) then print_endline @@ seperator;
+        (if expectedSize <> (List.length printableBoard) then
+          (applyNTimes size (fun () -> (printLine head size));
+          if count <> (size - 1) then print_endline @@ seperator)
+        else printLine head size);
         loop tail (count + 1)
       end
     | [] -> ()
