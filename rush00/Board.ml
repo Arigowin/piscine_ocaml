@@ -73,8 +73,8 @@ let is_player = function | Won x -> true | _ -> false
 let rec count_cells p board =
   let aux h = if not (is_player h) || h = (Won p) then 1 else 0
   in match board with
-    | h::t -> aux h + count_cells p t
-    | [] -> 0
+  | h::t -> aux h + count_cells p t
+  | [] -> 0
 
 let count_empty_cells = count_cells Player.None
 
@@ -189,12 +189,12 @@ let seperator level size =
   and levelLoop localLevel = match localLevel with
     | 0 -> "--"
     | _ -> "-" ^ (sizeLoop localLevel size) ^ (if localLevel <> level then "-" else "")
-    in let res = levelLoop level in
-    res
+  in let res = levelLoop level in
+  res
 
-  let rec applyNTimes n f =
-     if n = 0 then ()
-     else (f(); applyNTimes (n - 1) f)
+let rec applyNTimes n f =
+  if n = 0 then ()
+  else (f(); applyNTimes (n - 1) f)
 
 let printBoard printableBoard levels size =
   let seperator = seperator levels size in
@@ -205,9 +205,9 @@ let printBoard printableBoard levels size =
       begin
         if (count <> 0) && ((count mod size) = 0) then print_endline @@ seperator;
         (if expectedSize <> (List.length printableBoard) then
-          (applyNTimes size (fun () -> (printLine head size));
-          if count <> (size - 1) then print_endline @@ seperator)
-        else printLine head size);
+           (applyNTimes size (fun () -> (printLine head size));
+            if count <> (size - 1) then print_endline @@ seperator)
+         else printLine head size);
         loop tail (count + 1)
       end
     | [] -> ()

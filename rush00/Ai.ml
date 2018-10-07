@@ -80,11 +80,11 @@ let has_advantage p small_b =
   and enemys_count = Board.count_cells (enemyOf p) (Board.listOf small_b)
   in if (Board.is_player small_b) && small_b = Won p then true
   else (
-      if your_count > enemys_count then true
-      else if enemys_count < your_count then false
-      else ( if (Board.count_empty_cells (Board.listOf small_b)) mod 2 = num
-      then true else false
-    ))
+    if your_count > enemys_count then true
+    else if enemys_count < your_count then false
+    else ( if (Board.count_empty_cells (Board.listOf small_b)) mod 2 = num
+           then true else false
+         ))
 
 let big_combination_score n p board =
   let b = (List.nth board n) in
@@ -110,11 +110,11 @@ let get_ai_coords board =
     let c = (big_table_strategy list_b Player.P2 5) in
     (c, place_x (List.nth list_b c)))
   else if (is_about_to_win_in_big_table list_b Player.P1 5) then (
-      let c = (big_table_strategy list_b Player.P1 5) in
-      (c, place_x (List.nth list_b c)))
+    let c = (big_table_strategy list_b Player.P1 5) in
+    (c, place_x (List.nth list_b c)))
   else if (is_about_to_win_in_big_table list_b Player.P2 4) then (
-        let c = (big_table_strategy list_b Player.P2 4) in
-        (c, place_x (List.nth list_b c)))
+    let c = (big_table_strategy list_b Player.P2 4) in
+    (c, place_x (List.nth list_b c)))
   else if (player_can_score Player.P2 board 5) then find_where_to_block_or_win board Player.P2 0 5
   else if (player_can_score Player.P2 board 4 ) then find_where_to_block_or_win board Player.P2 0 4
   else if (play_somewhere board 0 has_advantage) <> (0, 0) then play_somewhere board 0 has_advantage
