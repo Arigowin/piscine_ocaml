@@ -6,3 +6,6 @@ let main av =
 
 let () =
   main Sys.argv
+
+(* for compile use this *)
+(* ocamlfind ocamlc -linkpkg -package unix micronap.ml *)
