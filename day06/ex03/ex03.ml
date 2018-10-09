@@ -61,8 +61,8 @@ module Make : MAKE =
     let eqs = ( = )
     let add = ( + )
     let sub = ( - )
-    let mul x1 x2 = (x1 * x2 + (1 lsl (Fb.bits - 1))) lsr Fb.bits
-    let div x1 x2 = ((x1 lsl Fb.bits) + (x2 / 2)) / x2
+    let mul x1 x2 = of_float ((to_float x1) *. (to_float x2))
+    let div x1 x2 = of_float ((to_float x1) /. (to_float x2))
     let rec foreach x1 x2 f = if lte x1 x2 then (f x1; foreach (succ x1) x2 f)
   end
 
@@ -77,4 +77,18 @@ let () =
   let y8 = Fixed8.of_float 21.32 in
   let r8 = Fixed8.add x8 y8 in
   print_endline (Fixed8.to_string r8);
-  Fixed4.foreach (Fixed4.zero) (Fixed4.one) (fun f -> print_endline (Fixed4.to_string f))
+  Fixed4.foreach (Fixed4.zero) (Fixed4.one) (fun f -> print_endline (Fixed4.to_string f));
+  print_endline (Fixed8.to_string (Fixed8.succ Fixed8.zero));
+  print_endline (Fixed8.to_string (Fixed8.pred Fixed8.one));
+  print_endline (Fixed8.to_string (Fixed8.min x8 y8));
+  print_endline (Fixed8.to_string (Fixed8.max x8 y8));
+  print_endline (string_of_bool (Fixed8.gth x8 y8));
+  print_endline (string_of_bool (Fixed8.lth x8 y8));
+  print_endline (string_of_bool (Fixed8.gte x8 y8));
+  print_endline (string_of_bool (Fixed8.lte x8 y8));
+  print_endline (string_of_bool (Fixed8.eqp x8 y8));
+  print_endline (string_of_bool (Fixed8.eqs x8 y8));
+  print_endline (Fixed8.to_string (Fixed8.add x8 y8));
+  print_endline (Fixed8.to_string (Fixed8.sub x8 y8));
+  print_endline (Fixed8.to_string (Fixed8.mul x8 y8));
+  print_endline (Fixed8.to_string (Fixed8.div x8 y8))
