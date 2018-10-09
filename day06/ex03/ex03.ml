@@ -38,29 +38,32 @@ module type MAKE =
 module Make : MAKE =
   functor (Fb: FRACTIONNAL_BITS) ->
   struct
-    type t = (int * int)
-    let of_float (x:float) = (Fb.bits, int_of_float (x *. float_of_int (1 lsl Fb.bits)))
-    let of_int x = (0, 0)
-    let to_float x = (float_of_int x) / (1 lsr Fb.bits)
-    let to_int x = 0
-    let to_string x = ""
-    let zero = (0, 0)
-    let one = (0, 0)
-    let succ x = (0, 0)
-    let pred x = (0, 0)
-    let min x1 x2 = (0, 0)
-    let max x1 x2 = (0, 0)
-    let gth x1 x2 = true
-    let lth x1 x2 = true
-    let gte x1 x2 = true
-    let lte x1 x2 = true
-    let eqp x1 x2 = x1 == x2
-    let eqs x1 x2 = x1 = x2
-    let add x1 x2 = (0, 0)
-    let sub x1 x2 = (0, 0)
-    let mul x1 x2 = (0, 0)
-    let div x1 x2 = (0, 0)
-    let foreach x1 x2 f = ()
+    type t = int
+    let of_float (x:float) = 
+      let round v = 
+        if ((ceil v) -. v) < (v -. (floor v)) then ceil v else floor v
+      in int_of_float (round (x *. (float_of_int (1 lsl Fb.bits))))
+    let of_int x = x lsl Fb.bits
+    let to_float x = (float_of_int x) /. (float_of_int (1 lsl Fb.bits))
+    let to_int x = x lsr Fb.bits
+    let to_string x = string_of_float (to_float x)
+    let zero = 0
+    let one = of_int 1
+    let succ = ( + ) 1
+    let pred x = x - 1
+    let min x1 x2 = if x1 <= x2 then x1 else x2
+    let max x1 x2 = if x1 >= x2 then x1 else x2
+    let gth = ( > )
+    let lth = ( < )
+    let gte = ( >= )
+    let lte = ( <= )
+    let eqp = ( == )
+    let eqs = ( = )
+    let add = ( + )
+    let sub = ( - )
+    let mul x1 x2 = (x1 * x2 + (1 lsl (Fb.bits - 1))) lsr Fb.bits
+    let div x1 x2 = ((x1 lsl Fb.bits) + (x2 / 2)) / x2
+    let rec foreach x1 x2 f = if lte x1 x2 then (f x1; foreach (succ x1) x2 f)
   end
 
 
@@ -68,6 +71,7 @@ module Make : MAKE =
 
 module Fixed4 : FIXED = Make (struct let bits = 4 end)
 module Fixed8 : FIXED = Make (struct let bits = 8 end)
+
 let () =
   let x8 = Fixed8.of_float 21.10 in
   let y8 = Fixed8.of_float 21.32 in
