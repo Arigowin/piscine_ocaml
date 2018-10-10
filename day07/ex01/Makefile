@@ -1,6 +1,7 @@
-NAME = ex00
+NAME = ex01
 
 SOURCES =	people.ml \
+			doctor.ml \
 			main.ml
 
 CAMLC = ocamlc
