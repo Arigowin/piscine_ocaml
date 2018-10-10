@@ -1,5 +1,5 @@
 let () = 
-  let p = new People.people "The Master" in
+  let p = new People.people "Amy Pond" in
   print_endline p#to_string;
   p#talk;
   p#die

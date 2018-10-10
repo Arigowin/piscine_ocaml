@@ -10,4 +10,8 @@ let () =
   print_endline newd#to_string;
   newd#talk;
   newd#use_sonic_screwdriver;
-
+  let dalek = new Dalek.dalek in
+  print_endline (dalek#to_string);
+  dalek#talk;
+  dalek#exterminate p;
+  dalek#die
