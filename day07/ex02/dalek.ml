@@ -1,21 +1,18 @@
 class dalek =
   object (self)
 
-    val _name:string = 
-      let rec randStr i acc =
-        if i <= 0 then
-          acc
-        else
-          let c = 
-            if (Random.int 2) = 0 then
-              char_of_int (Random.int (26 + 97))
-            else
-              char_of_int (Random.int (26 + 65))
-          in (randStr (i - 1) (acc ^ (String.make 1 c)))
-      in
-      randStr 3 "Dalek"
+    val _name:string =
+      "Dalek"
+      ^ let randomName =
+          ignore (Random.self_init());
+          (String.make 1 (char_of_int ((Random.int 26) + (int_of_char 'A'))))
+          ^ (String.make 1 (char_of_int ((Random.int 26) + (int_of_char 'a'))))
+          ^ (String.make 1 (char_of_int ((Random.int 26) + (int_of_char 'a'))))
+      in randomName
     val _hp:int = 100
     val mutable _shield:bool = true
+
+    initializer Random.self_init()
 
     method to_string = _name ^ " has " ^ (string_of_int _hp) ^ " HP and has " ^ (if _shield then "shield." else "no shield.")
     method talk = 
@@ -27,6 +24,7 @@ class dalek =
           | _ -> "")
     method exterminate (p:People.people) =
       p#die;
-      _shield <- if _shield = true then false else true
+      _shield <- if (_shield = true) then false else true
     method die = print_endline "Emergency temporal Shift!"
+
   end
