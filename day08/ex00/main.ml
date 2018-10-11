@@ -1,11 +1,11 @@
 let () =
-  let h = new Hydrogen.hydrogen in
-  let c = new Carbon.carbon in
-  let o = new Oxygen.oxygen in
-  let p = new Platinum.platinum in
-  let a = new Arsenic.arsenic in
-  let z = new Zinc.zinc in
-  let n = new Nitrogen.nitrogen in
+  let h = new Lst_atom.hydrogen in
+  let c = new Lst_atom.carbon in
+  let o = new Lst_atom.oxygen in
+  let p = new Lst_atom.platinum in
+  let a = new Lst_atom.arsenic in
+  let z = new Lst_atom.zinc in
+  let n = new Lst_atom.nitrogen in
   print_endline h#to_string;
   print_endline c#to_string;
   print_endline o#to_string;
