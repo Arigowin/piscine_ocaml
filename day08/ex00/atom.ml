@@ -1,8 +1,8 @@
-class virtual atom =
+class virtual atom n s an =
   object (self)
-    method virtual name :string
-    method virtual symbol : string
-    method virtual atomic_number : int
+    method name : string = n
+    method symbol : string = s
+    method  atomic_number : int = an
     method to_string = "Atom " ^ self#name ^ "(" ^ self#symbol ^ "): " ^ (string_of_int self#atomic_number)
     method equals (a:atom) = self#atomic_number = a#atomic_number
   end

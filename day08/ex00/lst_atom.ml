@@ -1,55 +1,34 @@
 class hydrogen =
   object
-    inherit Atom.atom
-    method name = "Hydrogen"
-    method symbol = "H"
-    method atomic_number = 1
+    inherit Atom.atom "Hydrogen" "H" 1
   end
 
 class carbon =
   object
-    inherit Atom.atom
-    method name = "Carbon"
-    method symbol = "C"
-    method atomic_number = 6
+    inherit Atom.atom "Carbon" "C" 6
   end
 
 class nitrogen =
   object
-    inherit Atom.atom
-    method name = "Nitrogen"
-    method symbol = "N"
-    method atomic_number = 7
+    inherit Atom.atom "Nitrogen" "N" 7
   end
 
 class oxygen =
   object
-    inherit Atom.atom
-    method name = "Oxygen"
-    method symbol = "O"
-    method atomic_number = 8
+    inherit Atom.atom "Oxygen" "O" 8
   end
 
 class zinc =
   object
-    inherit Atom.atom
-    method name = "Zinc"
-    method symbol = "Zn"
-    method atomic_number = 30
+    inherit Atom.atom "Zinc" "Zn" 30
   end
 
 class arsenic =
   object
-    inherit Atom.atom
-    method name = "Arsenic"
-    method symbol = "As"
-    method atomic_number = 33
+    inherit Atom.atom "Arsenic" "As" 33
   end
 
 class platinum =
   object
-    inherit Atom.atom
-    method name = "Platinum"
-    method symbol = "Pt"
-    method atomic_number = 78
+    inherit Atom.atom "Platinum" "Pt" 78
   end
