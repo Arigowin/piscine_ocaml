@@ -18,6 +18,16 @@ class oxygen =
     inherit Atom.atom "Oxygen" "O" 8
   end
 
+class phosphore = 
+  object
+    inherit Atom.atom "Phosphore" "P" 15
+  end
+
+class chlore =
+  object
+    inherit Atom.atom "Chlore" "Cl" 17
+  end
+
 class zinc =
   object
     inherit Atom.atom "Zinc" "Zn" 30
