@@ -1,4 +1,4 @@
-class virtual alkane n =
+class alkane n =
   object (self)
     method name = (self#gen_name n) ^ "ane"
     method formula = self#gen_formula n
@@ -22,7 +22,7 @@ class virtual alkane n =
       | 10    -> "Dec"
       | 11    -> "Undec"
       | 12    -> "Dodec"
-      | _     -> ""
+      | _     -> "Invalide alk"
 
     method to_string = "Alkane " ^ self#name ^ " (" ^ self#formula ^ ")"
     method equals (a:alkane) = (self#name = a#name) && (self#formula = a#formula)
