@@ -1,4 +1,4 @@
-class alkane n =
+class virtual alkane n =
   object (self)
     method name = (self#gen_name n) ^ "ane"
     method formula = self#gen_formula n
@@ -7,7 +7,7 @@ class alkane n =
       if n > 0 && n <= 12 then
         "C" ^ (if n > 1 then (string_of_int n) else "") ^ "H" ^ (string_of_int ((n * 2) + 2))
       else
-        "Invalid alkane"
+        "Invalid alkane: " ^ (string_of_int n)
 
     method private gen_name = function
       | 1     -> "Meth"

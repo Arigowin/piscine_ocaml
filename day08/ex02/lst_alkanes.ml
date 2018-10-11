@@ -12,3 +12,13 @@ class octane =
   object
     inherit Alkane.alkane 8
   end
+
+class invalid13 =
+  object
+    inherit Alkane.alkane 13
+  end
+
+class invalid0 =
+  object
+    inherit Alkane.alkane 0
+  end
