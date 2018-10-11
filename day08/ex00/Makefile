@@ -7,6 +7,7 @@ SOURCES = 	atom.ml \
 			platinum.ml \
 			arsenic.ml \
 			zinc.ml \
+			nitrogen.ml \
 			main.ml
 LIBS =
 OCAMLMAKEFILE = $(PWD)/../OCamlMakefile
