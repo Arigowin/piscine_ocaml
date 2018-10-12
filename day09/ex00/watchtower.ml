@@ -14,7 +14,7 @@ struct
     let res = (x + y) mod zero
     in if res = 0 then zero else res
   let sub (x: hour) (y: hour) : hour = 
-    let (res:hour) = ((x - y) mod zero)
+    let res = ((x - y) mod zero)
     in 
     if res = 0 then
       zero
