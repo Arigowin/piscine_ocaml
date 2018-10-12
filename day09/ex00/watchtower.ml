@@ -9,12 +9,12 @@ end
 module Watchtower =
 struct
   type hour = int
-  let zero = 12
-  let add (x: hour) (y: hour) = 
+  let zero : hour = 12
+  let add (x: hour) (y: hour) : hour = 
     let res = (x + y) mod zero
     in if res = 0 then zero else res
-  let sub (x: hour) (y: hour) = 
-    let res = ((x - y) mod zero)
+  let sub (x: hour) (y: hour) : hour = 
+    let (res:hour) = ((x - y) mod zero)
     in 
     if res = 0 then
       zero
